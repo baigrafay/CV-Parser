@@ -1,3 +1,4 @@
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render
 from django.http import JsonResponse
 import magic
@@ -8,6 +9,7 @@ import json
 
 ML_API_URL = 'https://ml-service-render.onrender.com/predict'
 
+@csrf_exempt
 def categorizer(request):
     if request.method == 'POST':
         resume = request.FILES.get('resume')
@@ -31,7 +33,7 @@ def categorizer(request):
                 if response.status_code == 200:
                     result = response.json()
                     category_name = result.get("category", "Unknown")
-                    return JsonResponse({"message": f'Predicted Category: {category_name}'})
+                    return JsonResponse({"category": f'{category_name}'})
                 else:
                     return JsonResponse({"error": "Error from ML service. Try again later."}, status=500)
             except Exception as e:
