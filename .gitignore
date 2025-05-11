@@ -1,0 +1,43 @@
+### Python ###
+*.pyc
+__pycache__/
+*.sqlite3
+*.sqlitedb
+local_settings.py
+/staticfiles
+/mediafiles
+
+### Django ###
+*.log
+*.pot
+
+### Environment ###
+env/
+venv/
+ENV/
+.venv/
+.python-version
+*.egg-info/
+
+### OS Specific ###
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+### Packages ###
+node_modules/
+pnpm-lock.yaml
+yarn.lock
+
+### Deployment ###
+*.swp
+*~
+.cache
+.ropeproject
+.coverage
+.pytest_cache
+htmlcov/
+.tox/
+.nox/
+.mypy_cache/
