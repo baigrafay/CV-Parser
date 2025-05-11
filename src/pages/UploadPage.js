@@ -43,20 +43,39 @@ export default function UploadPage() {
     fileInputRef.current.click();
   };
 
-  const handleUpload = (e) => {
+  const handleUpload = async (e) => {
     e.preventDefault();
-    if (!fileName) {
+    if (!fileInputRef.current.files[0]) {
       toast.error('No file selected!', { position: 'top-center' });
       return;
     }
     setLoading(true);
     toast.info('Processing your resume...', { position: 'top-center' });
-    setTimeout(() => {
+  
+    const formData = new FormData();
+    formData.append('resume', fileInputRef.current.files[0]);
+  
+    try {
+      const response = await fetch('http://127.0.0.1:8000/categorize/', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      const data = await response.json();
+  
+      if (response.ok) {
+        localStorage.setItem('professionResult', JSON.stringify(data));
+        navigate('/result');
+      } else {
+        toast.error(data.error || 'Something went wrong', { position: 'top-center' });
+      }
+    } catch (error) {
+      toast.error('Failed to connect to backend.', { position: 'top-center' });
+    } finally {
       setLoading(false);
-      navigate('/result');
-    }, 3000);
+    }
   };
-
+  
   const handleHomeClick = () => {
     navigate('/'); // Navigates to the landing page
   };

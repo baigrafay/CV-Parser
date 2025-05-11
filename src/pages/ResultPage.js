@@ -11,29 +11,129 @@ const pageVariants = {
 
 const professions = [
   {
-    name: "Software Engineer",
+    name: "Advocate",
     description:
-      "A software engineer designs, develops, and maintains software systems. They are problem solvers and innovators, creating applications that drive technology forward.",
+      "Advocates represent clients in legal proceedings and offer expert legal advice and interpretation.",
   },
   {
-    name: "Data Scientist",
+    name: "Arts",
     description:
-      "Data scientists analyze large sets of data to uncover insights and help businesses make informed decisions. They excel at interpreting complex data patterns and building predictive models.",
+      "Arts professionals express creativity through various media, including visual, performing, and literary forms.",
   },
   {
-    name: "UI/UX Designer",
+    name: "Automation Testing",
     description:
-      "UI/UX designers focus on creating beautiful and user-friendly interfaces. They ensure that digital experiences are intuitive, accessible, and enjoyable for users.",
+      "Automation testers develop scripts and tools to automate software testing processes for efficiency and accuracy.",
   },
   {
-    name: "Product Manager",
+    name: "Blockchain",
     description:
-      "A product manager oversees the development and lifecycle of a product. They bridge the gap between engineering, design, and marketing teams to deliver the best product possible.",
+      "Blockchain professionals design and manage decentralized ledger systems to ensure secure, transparent digital transactions.",
   },
   {
-    name: "Cybersecurity Analyst",
+    name: "Business Analyst",
     description:
-      "Cybersecurity analysts protect systems, networks, and data from cyber threats. They identify vulnerabilities and implement security measures to safeguard sensitive information.",
+      "Business analysts evaluate business processes and data to suggest improvements and support strategic decisions.",
+  },
+  {
+    name: "Civil Engineer",
+    description:
+      "Civil engineers design, construct, and maintain infrastructure projects like roads, bridges, and buildings.",
+  },
+  {
+    name: "Data Science",
+    description:
+      "Data scientists analyze and model complex data to derive actionable insights and drive decision-making.",
+  },
+  {
+    name: "Database",
+    description:
+      "Database administrators design, maintain, and secure data storage systems for reliable and efficient access.",
+  },
+  {
+    name: "DevOps Engineer",
+    description:
+      "DevOps engineers bridge development and operations, ensuring fast, reliable, and scalable software delivery.",
+  },
+  {
+    name: "DotNet Developer",
+    description:
+      ".NET developers build applications using Microsoft’s .NET framework, focusing on performance and scalability.",
+  },
+  {
+    name: "Electrical Engineering",
+    description:
+      "Electrical engineers design and develop electrical systems and equipment for various industries.",
+  },
+  {
+    name: "ETL Developer",
+    description:
+      "ETL developers create data pipelines to extract, transform, and load data into systems for analysis.",
+  },
+  {
+    name: "Hadoop",
+    description:
+      "Hadoop developers manage large-scale data processing systems using the Hadoop ecosystem for big data solutions.",
+  },
+  {
+    name: "Health and fitness",
+    description:
+      "Health and fitness professionals guide individuals in achieving physical wellness through exercise and nutrition.",
+  },
+  {
+    name: "HR",
+    description:
+      "HR professionals manage hiring, training, and employee relations to build effective and compliant workplaces.",
+  },
+  {
+    name: "Java Developer",
+    description:
+      "Java developers build cross-platform applications using the Java programming language and related tools.",
+  },
+  {
+    name: "Mechanical Engineer",
+    description:
+      "Mechanical engineers design and build mechanical systems and products for industries ranging from automotive to aerospace.",
+  },
+  {
+    name: "Network Security Engineer",
+    description:
+      "Network security engineers protect digital infrastructures by implementing measures to prevent cyber threats and breaches.",
+  },
+  {
+    name: "Operations Manager",
+    description:
+      "Operations managers oversee daily operations, streamline processes, and ensure efficiency across departments.",
+  },
+  {
+    name: "PMO",
+    description:
+      "Project Management Office professionals standardize project execution and support teams to meet organizational goals.",
+  },
+  {
+    name: "Python Developer",
+    description:
+      "Python developers create software applications and automation tools using the Python programming language.",
+  },
+  {
+    name: "Sales",
+    description:
+      "Sales professionals build client relationships and drive revenue by promoting and selling products or services.",
+  },
+  {
+    name: "SAP Developer",
+    description:
+      "SAP developers build and customize enterprise solutions using SAP frameworks to meet business requirements.",
+  },
+  {
+    name: "Testing",
+    description:
+      "Software testers identify bugs and ensure quality by validating software against requirements and user needs.",
+  },
+  {
+    name: "Web Designing",
+    description:
+      "Web designers craft the layout and aesthetics of websites, focusing on user experience and responsiveness.",
   },
 ];
 
@@ -44,22 +144,22 @@ export default function ResultPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const random = Math.floor(Math.random() * professions.length);
-    const timeout = setTimeout(() => {
-      setProfession(professions[random]);
+    const result = localStorage.getItem("professionResult");
+    if (result) {
+      const parsed = JSON.parse(result);
+      const professionMatch = professions.find(
+        (p) => p.name.toLowerCase() === parsed.category?.toLowerCase()
+      );
+      if (professionMatch) {
+        setProfession(professionMatch);
+      } else {
+        setProfession({
+          name: parsed.category,
+          description: "No description available.",
+        });
+      }
       setLoading(false);
-    }, 4000); // Spinner effect runs for 4 seconds before stopping on the correct profession
-
-    const spinnerInterval = setInterval(() => {
-      const randomSpinner =
-        professions[Math.floor(Math.random() * professions.length)];
-      setSpinnerProfession(randomSpinner.name);
-    }, 200); // Change profession every 200ms
-
-    return () => {
-      clearTimeout(timeout);
-      clearInterval(spinnerInterval); // Clear the interval when the component unmounts or the effect ends
-    };
+    }
   }, []);
 
   const handleAddAnotherCV = () => {
